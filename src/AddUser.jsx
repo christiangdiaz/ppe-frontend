@@ -9,7 +9,7 @@ const AddUser = ({ token }) => {
     const handleAddUser = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:4000/users', {
+            const response = await axios.post('https://lit-sea-66725-e16b11feba54.herokuapp.com/users', {
                 username,
                 password,
                 role

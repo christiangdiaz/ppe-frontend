@@ -9,7 +9,7 @@ const UserList = ({ token }) => {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await axios.get('http://localhost:4000/users', {
+                const response = await axios.get('https://lit-sea-66725-e16b11feba54.herokuapp.com/users', {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 setUsers(response.data);
@@ -25,7 +25,7 @@ const UserList = ({ token }) => {
 
     const handleDeleteUser = async (username) => {
         try {
-            const response = await axios.delete(`http://localhost:4000/users/${username}`, {
+            const response = await axios.delete(`https://lit-sea-66725-e16b11feba54.herokuapp.com/users/${username}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             if (response.status === 200) {

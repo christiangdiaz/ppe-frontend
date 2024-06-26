@@ -4,10 +4,10 @@ import AddUser from './AddUser';
 import UserList from './UserList';
 
 const App = () => {
-    const [token, setToken] = useState('');
+    const [token, setToken] = useState(null);
 
-    const handleLogin = (token) => {
-        setToken(token);
+    const handleLogin = (newToken) => {
+        setToken(newToken);
     };
 
     return (
