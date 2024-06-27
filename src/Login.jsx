@@ -13,8 +13,10 @@ const Login = ({ onLogin }) => {
                 password
             });
             if (response.status === 200) {
+                const token = response.data.token;
+                localStorage.setItem('authToken', token); // Save token to localStorage
                 alert('Login successful!');
-                onLogin(response.data.token); // Pass the token to the parent
+                onLogin(token); // Pass the token to the parent
             }
         } catch (error) {
             alert('Error logging in: ' + (error.response && error.response.data ? error.response.data.message : error.message));
