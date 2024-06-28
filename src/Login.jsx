@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import styles from './Login.module.css';
 
 const Login = ({ onLogin }) => {
   const [username, setUsername] = useState('');
@@ -18,7 +17,6 @@ const Login = ({ onLogin }) => {
       });
 
       if (response.status === 200) {
-        alert('Login successful!');
         onLogin(response.data.token); // Pass the custom token to the parent component
       }
     } catch (error) {
@@ -27,20 +25,41 @@ const Login = ({ onLogin }) => {
   };
 
   return (
-    <div className={styles.container}>
-      <h2 className={styles.title}>Login</h2>
-      <form onSubmit={handleLogin} className={styles.form}>
-        <label className={styles.label}>
-          Username:
-          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required className={styles.input} />
-        </label>
-        <label className={styles.label}>
-          Password:
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required className={styles.input} />
-        </label>
-        <button type="submit" className={styles.button}>Login</button>
-      </form>
-      {error && <p className={styles.error}>Error: {error}</p>}
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full">
+        <h2 className="text-2xl font-semibold mb-6 text-center text-gray-700">Login</h2>
+        <form onSubmit={handleLogin} className="space-y-6">
+          <div>
+            <label className="block text-gray-600 mb-1" htmlFor="username">Username:</label>
+            <input
+              type="text"
+              id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+            />
+          </div>
+          <div>
+            <label className="block text-gray-600 mb-1" htmlFor="password">Password:</label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition-colors"
+          >
+            Login
+          </button>
+        </form>
+        {error && <p className="mt-4 text-center text-red-500">{`Error: ${error}`}</p>}
+      </div>
     </div>
   );
 };

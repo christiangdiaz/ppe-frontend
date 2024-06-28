@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import {jwtDecode} from 'jwt-decode'
+import {jwtDecode} from 'jwt-decode';
 import Login from './Login';
 import UploadFile from './UploadFile';
 import FileList from './FileList';
@@ -8,7 +8,7 @@ import UserList from './UserList';
 import AddUser from './AddUser';
 import HomePage from './HomePage';
 import Navbar from './NavBar';
-import './App.css';
+import './index.css';
 
 const App = () => {
   const [token, setToken] = useState(null);
@@ -41,7 +41,6 @@ const App = () => {
     localStorage.removeItem('userRole');
   };
 
-
   const handleFileUpload = () => {
     setFileListUpdate(!fileListUpdate); // Toggle the state to trigger re-fetching files
   };
@@ -57,7 +56,7 @@ const App = () => {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/upload" element={<UploadFile token={token} role={userRole} onFileUpload={handleFileUpload} />} />
-              <Route path="/files" element={<FileList userRole={userRole}/>} />
+              <Route path="/files" element={<FileList userRole={userRole} />} />
               <Route path="/users" element={<UserList token={token} role={userRole} />} />
               <Route path="/add-user" element={<AddUser token={token} role={userRole} />} />
             </Routes>

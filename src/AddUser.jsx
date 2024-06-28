@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import styles from './AddUser.module.css';
 
 const AddUser = ({ token, role, onAdd }) => {
   const [username, setUsername] = useState('');
@@ -22,7 +21,6 @@ const AddUser = ({ token, role, onAdd }) => {
       });
 
       if (response.status === 201) {
-        alert('User created successfully!');
         setUsername('');
         setPassword('');
         setRoleInput('user');
@@ -34,31 +32,50 @@ const AddUser = ({ token, role, onAdd }) => {
   };
 
   if (role !== 'manager') {
-    return <div className={styles.error}>Access denied: Managers only</div>;
+    return <div className="text-red-500 text-center mt-4">Access denied: Managers only</div>;
   }
 
   return (
-    <div className={styles.container}>
-      <h2 className={styles.title}>Add User</h2>
-      <form onSubmit={handleAddUser} className={styles.form}>
-        <label className={styles.label}>
-          Username:
-          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required className={styles.input} />
-        </label>
-        <label className={styles.label}>
-          Password:
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required className={styles.input} />
-        </label>
-        <label className={styles.label}>
-          Role:
-          <select value={roleInput} onChange={(e) => setRoleInput(e.target.value)} required className={styles.select}>
+    <div className="max-w-md mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+      <h2 className="text-2xl font-bold mb-4">Add User</h2>
+      <form onSubmit={handleAddUser} className="space-y-4">
+        <div>
+          <label className="block text-gray-700 text-sm font-bold mb-2">Username:</label>
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+        </div>
+        <div>
+          <label className="block text-gray-700 text-sm font-bold mb-2">Password:</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+        </div>
+        <div>
+          <label className="block text-gray-700 text-sm font-bold mb-2">Role:</label>
+          <select
+            value={roleInput}
+            onChange={(e) => setRoleInput(e.target.value)}
+            required
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          >
             <option value="user">User</option>
             <option value="manager">Manager</option>
           </select>
-        </label>
-        <button type="submit" className={styles.button}>Add User</button>
+        </div>
+        <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+          Add User
+        </button>
       </form>
-      {error && <p className={styles.error}>Error: {error}</p>}
+      {error && <p className="text-red-500 mt-4">{error}</p>}
     </div>
   );
 };

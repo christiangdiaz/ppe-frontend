@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { db, storage } from './firebase';
 import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import { ref, deleteObject } from 'firebase/storage';
-import styles from './FileList.module.css';
 
 const FileList = ({ userRole }) => {
   const [files, setFiles] = useState([]);
@@ -24,15 +23,12 @@ const FileList = ({ userRole }) => {
 
     fetchFiles();
   }, []);
-  console.log(userRole)
+
   const handleDeleteFile = async (fileId, fileName) => {
     try {
-      // Delete file from Firestore
       await deleteDoc(doc(db, 'files', fileId));
-      // Delete file from Firebase Storage
       const storageRef = ref(storage, `files/${fileName}`);
       await deleteObject(storageRef);
-
       setFiles(files.filter(file => file.id !== fileId));
     } catch (error) {
       setError(error.message);
@@ -48,17 +44,17 @@ const FileList = ({ userRole }) => {
   }
 
   return (
-    <div className={styles.container}>
-      <h2 className={styles.title}>File List</h2>
-      <ul className={styles.list}>
+    <div className="max-w-2xl mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+      <h2 className="text-2xl font-bold mb-4">File List</h2>
+      <ul className="space-y-4">
         {files.map(file => (
-          <li key={file.id} className={styles.listItem}>
-            <a href={file.url} target="_blank" rel="noopener noreferrer" className={styles.fileLink}>{file.name}</a>
-              {userRole==='manager' && (
-                <button onClick={() => handleDeleteFile(file.id, file.name)} className={styles.deleteButton}>Delete</button>
-
-              )}
-              
+          <li key={file.id} className="flex justify-between items-center">
+            <a href={file.url} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">{file.name}</a>
+            {userRole === 'manager' && (
+              <button onClick={() => handleDeleteFile(file.id, file.name)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline">
+                Delete
+              </button>
+            )}
           </li>
         ))}
       </ul>
