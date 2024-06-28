@@ -13,6 +13,7 @@ import './App.css';
 const App = () => {
   const [token, setToken] = useState(null);
   const [userRole, setUserRole] = useState(null);
+  const [fileListUpdate, setFileListUpdate] = useState(false);
 
   useEffect(() => {
     const storedToken = localStorage.getItem('authToken');
@@ -40,6 +41,11 @@ const App = () => {
     localStorage.removeItem('userRole');
   };
 
+
+  const handleFileUpload = () => {
+    setFileListUpdate(!fileListUpdate); // Toggle the state to trigger re-fetching files
+  };
+
   return (
     <Router>
       <div>
@@ -50,8 +56,8 @@ const App = () => {
             <Navbar userRole={userRole} onSignOut={handleSignOut} />
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="/upload" element={<UploadFile token={token} role={userRole} />} />
-              <Route path="/files" element={<FileList />} />
+              <Route path="/upload" element={<UploadFile token={token} role={userRole} onFileUpload={handleFileUpload} />} />
+              <Route path="/files" element={<FileList userRole={userRole}/>} />
               <Route path="/users" element={<UserList token={token} role={userRole} />} />
               <Route path="/add-user" element={<AddUser token={token} role={userRole} />} />
             </Routes>

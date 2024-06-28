@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import styles from './Login.module.css';
 
 const Login = ({ onLogin }) => {
   const [username, setUsername] = useState('');
@@ -17,7 +18,6 @@ const Login = ({ onLogin }) => {
       });
 
       if (response.status === 200) {
-        console.log('Response data:', response.data); // Debug log
         alert('Login successful!');
         onLogin(response.data.token); // Pass the custom token to the parent component
       }
@@ -27,22 +27,20 @@ const Login = ({ onLogin }) => {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <label>
+    <div className={styles.container}>
+      <h2 className={styles.title}>Login</h2>
+      <form onSubmit={handleLogin} className={styles.form}>
+        <label className={styles.label}>
           Username:
-          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
+          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required className={styles.input} />
         </label>
-        <br />
-        <label>
+        <label className={styles.label}>
           Password:
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required className={styles.input} />
         </label>
-        <br />
-        <button type="submit">Login</button>
+        <button type="submit" className={styles.button}>Login</button>
       </form>
-      {error && <p>Error: {error}</p>}
+      {error && <p className={styles.error}>Error: {error}</p>}
     </div>
   );
 };

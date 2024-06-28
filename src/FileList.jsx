@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { db } from './firebase';
-import { collection, getDocs } from 'firebase/firestore';
+import { db, storage } from './firebase';
+import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
+import { ref, deleteObject } from 'firebase/storage';
 import styles from './FileList.module.css';
 
-const FileList = ({ fileListUpdate }) => {
+const FileList = ({ userRole }) => {
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -22,7 +23,21 @@ const FileList = ({ fileListUpdate }) => {
     };
 
     fetchFiles();
-  }, [fileListUpdate]);
+  }, []);
+  console.log(userRole)
+  const handleDeleteFile = async (fileId, fileName) => {
+    try {
+      // Delete file from Firestore
+      await deleteDoc(doc(db, 'files', fileId));
+      // Delete file from Firebase Storage
+      const storageRef = ref(storage, `files/${fileName}`);
+      await deleteObject(storageRef);
+
+      setFiles(files.filter(file => file.id !== fileId));
+    } catch (error) {
+      setError(error.message);
+    }
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -38,7 +53,12 @@ const FileList = ({ fileListUpdate }) => {
       <ul className={styles.list}>
         {files.map(file => (
           <li key={file.id} className={styles.listItem}>
-            <a href={file.url} target="_blank" rel="noopener noreferrer" className={styles.link}>{file.name}</a>
+            <a href={file.url} target="_blank" rel="noopener noreferrer" className={styles.fileLink}>{file.name}</a>
+              {userRole==='manager' && (
+                <button onClick={() => handleDeleteFile(file.id, file.name)} className={styles.deleteButton}>Delete</button>
+
+              )}
+              
           </li>
         ))}
       </ul>
