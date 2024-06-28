@@ -1,33 +1,36 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import {jwtDecode} from 'jwt-decode'
 import Login from './Login';
 import UploadFile from './UploadFile';
 import FileList from './FileList';
-import SignOut from './Signout';
 import UserList from './UserList';
 import AddUser from './AddUser';
-import { useNavigate } from 'react-router-dom';
-import './App.css'
+import HomePage from './HomePage';
+import Navbar from './NavBar';
+import './App.css';
 
 const App = () => {
   const [token, setToken] = useState(null);
   const [userRole, setUserRole] = useState(null);
-  const [fileListUpdate, setFileListUpdate] = useState(false);
 
   useEffect(() => {
     const storedToken = localStorage.getItem('authToken');
-    const storedRole = localStorage.getItem('userRole');
-
-    if (storedToken && storedRole) {
+    if (storedToken) {
+      const decodedToken = jwtDecode(storedToken); // Decode the token
       setToken(storedToken);
-      setUserRole(storedRole);
+      setUserRole(decodedToken.role); // Extract the role from the decoded token
     }
   }, []);
 
-  const handleLogin = (newToken, role) => {
+  const handleLogin = (newToken) => {
+    const decodedToken = jwtDecode(newToken); // Decode the token
+    console.log('Login token:', newToken);  // Debug log
+    console.log('Login role:', decodedToken.role);  // Debug log
     setToken(newToken);
-    setUserRole(role);
+    setUserRole(decodedToken.role); // Extract the role from the decoded token
     localStorage.setItem('authToken', newToken);
-    localStorage.setItem('userRole', role);
+    localStorage.setItem('userRole', decodedToken.role);
   };
 
   const handleSignOut = () => {
@@ -37,24 +40,25 @@ const App = () => {
     localStorage.removeItem('userRole');
   };
 
-  const handleFileUpload = () => {
-    setFileListUpdate(!fileListUpdate); // Toggle the state to trigger re-fetching files
-  };
-
   return (
-    <div>
-      {!token ? (
-        <Login onLogin={handleLogin} />
-      ) : (
-        <div>
-          <SignOut onSignOut={handleSignOut} />
-          <FileList fileListUpdate={fileListUpdate} />
-          {userRole === 'manager' && <UploadFile token={token} onFileUpload={handleFileUpload} />}
-          {userRole === 'manager' && <UserList token={token} />}
-          {userRole === 'manager' && <AddUser token={token} />}
-        </div>
-      )}
-    </div>
+    <Router>
+      <div>
+        {!token ? (
+          <Login onLogin={handleLogin} />
+        ) : (
+          <div>
+            <Navbar userRole={userRole} onSignOut={handleSignOut} />
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/upload" element={<UploadFile token={token} role={userRole} />} />
+              <Route path="/files" element={<FileList />} />
+              <Route path="/users" element={<UserList token={token} role={userRole} />} />
+              <Route path="/add-user" element={<AddUser token={token} role={userRole} />} />
+            </Routes>
+          </div>
+        )}
+      </div>
+    </Router>
   );
 };
 

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import styles from './AddUser.module.css';
 
-const AddUser = ({ token, onAddUser }) => {
+const AddUser = ({ token, role, onAdd }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('user'); // Default role is user
+  const [roleInput, setRoleInput] = useState('user');
   const [error, setError] = useState(null);
 
   const handleAddUser = async (e) => {
@@ -15,7 +16,7 @@ const AddUser = ({ token, onAddUser }) => {
       const response = await axios.post('https://lit-sea-66725-e16b11feba54.herokuapp.com/users', {
         username,
         password,
-        role
+        role: roleInput
       }, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -24,39 +25,40 @@ const AddUser = ({ token, onAddUser }) => {
         alert('User created successfully!');
         setUsername('');
         setPassword('');
-        setRole('user'); // Reset role to default
-        onAddUser(); // Notify parent to update user list
+        setRoleInput('user');
+        onAdd();
       }
     } catch (error) {
       setError(error.response ? error.response.data.message : error.message);
     }
   };
 
+  if (role !== 'manager') {
+    return <div className={styles.error}>Access denied: Managers only</div>;
+  }
+
   return (
-    <div>
-      <h2>Add User</h2>
-      <form onSubmit={handleAddUser}>
-        <label>
+    <div className={styles.container}>
+      <h2 className={styles.title}>Add User</h2>
+      <form onSubmit={handleAddUser} className={styles.form}>
+        <label className={styles.label}>
           Username:
-          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
+          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required className={styles.input} />
         </label>
-        <br />
-        <label>
+        <label className={styles.label}>
           Password:
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required className={styles.input} />
         </label>
-        <br />
-        <label>
+        <label className={styles.label}>
           Role:
-          <select value={role} onChange={(e) => setRole(e.target.value)} required>
+          <select value={roleInput} onChange={(e) => setRoleInput(e.target.value)} required className={styles.select}>
             <option value="user">User</option>
             <option value="manager">Manager</option>
           </select>
         </label>
-        <br />
-        <button type="submit">Add User</button>
+        <button type="submit" className={styles.button}>Add User</button>
       </form>
-      {error && <p>Error: {error}</p>}
+      {error && <p className={styles.error}>Error: {error}</p>}
     </div>
   );
 };

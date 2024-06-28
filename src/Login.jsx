@@ -17,8 +17,9 @@ const Login = ({ onLogin }) => {
       });
 
       if (response.status === 200) {
+        console.log('Response data:', response.data); // Debug log
         alert('Login successful!');
-        onLogin(response.data.token, response.data.role); // Pass the custom token and role to the parent component
+        onLogin(response.data.token); // Pass the custom token to the parent component
       }
     } catch (error) {
       setError(error.response ? error.response.data.message : error.message);
@@ -47,4 +48,3 @@ const Login = ({ onLogin }) => {
 };
 
 export default Login;
-    
