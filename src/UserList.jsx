@@ -37,24 +37,26 @@ const UserList = ({ token, role }) => {
   }
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="text-center mt-4">Loading...</div>;
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div className="text-center mt-4 text-red-500">Error: {error}</div>;
   }
 
   return (
-    <div className="max-w-2xl mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-      <h2 className="text-2xl font-bold mb-4">User List</h2>
-      <ul className="space-y-4">
-        {users.map(user => (
-          <li key={user.id} className="flex justify-between items-center">
-            {user.username} ({user.role})
-            <button onClick={() => handleDeleteUser(user.id)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline">Delete</button>
-          </li>
-        ))}
-      </ul>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="bg-gray-200 p-8 rounded-lg shadow-md w-full max-w-2xl">
+        <h2 className="text-3xl font-semibold mb-6 text-center text-gray-800">Resident's Directory</h2>
+        <ul className="space-y-4">
+          {users.map(user => (
+            <li key={user.id} className="flex justify-between items-center bg-white p-4 rounded-lg shadow-sm">
+              <span className="text-gray-700">{user.username} ({user.role})</span>
+              <button onClick={() => handleDeleteUser(user.id)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline">Delete</button>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };

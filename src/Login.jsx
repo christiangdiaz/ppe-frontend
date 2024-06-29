@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import mainPicture from './images/PPE.jpg';
 
 const Login = ({ onLogin }) => {
   const [username, setUsername] = useState('');
@@ -25,9 +26,12 @@ const Login = ({ onLogin }) => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full">
-        <h2 className="text-2xl font-semibold mb-6 text-center text-gray-700">Login</h2>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 relative">
+      <img src={mainPicture} alt="Background" className="absolute inset-0 w-full h-full object-cover z-0 opacity-60" />
+      <h1 className="text-3xl font-bold mb-4 text-center text-gray-800 bg-white bg-opacity-90 p-4 rounded-lg shadow-md z-10">
+        Pelican Point East
+      </h1>
+      <div className="bg-white bg-opacity-85 p-8 rounded-lg shadow-md max-w-md w-full z-10">
         <form onSubmit={handleLogin} className="space-y-6">
           <div>
             <label className="block text-gray-600 mb-1" htmlFor="username">Username:</label>

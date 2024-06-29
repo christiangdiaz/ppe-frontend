@@ -36,46 +36,54 @@ const AddUser = ({ token, role, onAdd }) => {
   }
 
   return (
-    <div className="max-w-md mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-      <h2 className="text-2xl font-bold mb-4">Add User</h2>
-      <form onSubmit={handleAddUser} className="space-y-4">
-        <div>
-          <label className="block text-gray-700 text-sm font-bold mb-2">Username:</label>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-        </div>
-        <div>
-          <label className="block text-gray-700 text-sm font-bold mb-2">Password:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-        </div>
-        <div>
-          <label className="block text-gray-700 text-sm font-bold mb-2">Role:</label>
-          <select
-            value={roleInput}
-            onChange={(e) => setRoleInput(e.target.value)}
-            required
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="bg-gray-200 p-8 rounded-lg shadow-md w-full max-w-md mx-4">
+        <h2 className="text-3xl font-semibold mb-6 text-center text-gray-800">Add User</h2>
+        <form onSubmit={handleAddUser} className="space-y-6">
+          <div>
+            <label className="block text-gray-700 mb-1" htmlFor="username">Username:</label>
+            <input
+              type="text"
+              id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700 mb-1" htmlFor="password">Password:</label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700 mb-1" htmlFor="role">Role:</label>
+            <select
+              id="role"
+              value={roleInput}
+              onChange={(e) => setRoleInput(e.target.value)}
+              required
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="user">User</option>
+              <option value="manager">Manager</option>
+            </select>
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors"
           >
-            <option value="user">User</option>
-            <option value="manager">Manager</option>
-          </select>
-        </div>
-        <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-          Add User
-        </button>
-      </form>
-      {error && <p className="text-red-500 mt-4">{error}</p>}
+            Add User
+          </button>
+        </form>
+        {error && <p className="mt-4 text-center text-red-500">{`Error: ${error}`}</p>}
+      </div>
     </div>
   );
 };

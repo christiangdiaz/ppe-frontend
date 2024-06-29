@@ -9,6 +9,7 @@ import AddUser from './AddUser';
 import HomePage from './HomePage';
 import Navbar from './NavBar';
 import './index.css';
+import ContactUs from './ContactUs';
 
 const App = () => {
   const [token, setToken] = useState(null);
@@ -57,8 +58,9 @@ const App = () => {
               <Route path="/" element={<HomePage />} />
               <Route path="/upload" element={<UploadFile token={token} role={userRole} onFileUpload={handleFileUpload} />} />
               <Route path="/files" element={<FileList userRole={userRole} />} />
-              <Route path="/users" element={<UserList token={token} role={userRole} />} />
+              <Route path="/resident-directory" element={<UserList token={token} role={userRole} />} />
               <Route path="/add-user" element={<AddUser token={token} role={userRole} />} />
+              <Route path="contact" element={<ContactUs/>}/>
             </Routes>
           </div>
         )}
