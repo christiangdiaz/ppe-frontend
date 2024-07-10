@@ -10,10 +10,11 @@ import HomePage from './HomePage';
 import Navbar from './NavBar';
 import './index.css';
 import ContactUs from './ContactUs';
+import { useNavigate } from 'react-router-dom';
 
 const App = () => {
   const [token, setToken] = useState(null);
-  const [userRole, setUserRole] = useState(null);
+  const [userRole, setUserRole] = useState('Guest');
   const [fileListUpdate, setFileListUpdate] = useState(false);
 
   useEffect(() => {
@@ -25,19 +26,20 @@ const App = () => {
     }
   }, []);
 
+
+
   const handleLogin = (newToken) => {
     const decodedToken = jwtDecode(newToken); // Decode the token
-    console.log('Login token:', newToken);  // Debug log
-    console.log('Login role:', decodedToken.role);  // Debug log
     setToken(newToken);
     setUserRole(decodedToken.role); // Extract the role from the decoded token
     localStorage.setItem('authToken', newToken);
     localStorage.setItem('userRole', decodedToken.role);
+    
   };
 
   const handleSignOut = () => {
     setToken(null);
-    setUserRole(null);
+    setUserRole('Guest');
     localStorage.removeItem('authToken');
     localStorage.removeItem('userRole');
   };
@@ -45,25 +47,26 @@ const App = () => {
   const handleFileUpload = () => {
     setFileListUpdate(!fileListUpdate); // Toggle the state to trigger re-fetching files
   };
-
+  console.log(userRole)
   return (
     <Router>
       <div>
-        {!token ? (
-          <Login onLogin={handleLogin} />
-        ) : (
-          <div>
-            <Navbar userRole={userRole} onSignOut={handleSignOut} />
-            <Routes>
-              <Route path="/" element={<HomePage />} />
+        <Navbar userRole={userRole} onSignOut={handleSignOut} />
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/" element={<HomePage />} />
+          <Route path="/contact" element={<ContactUs />} />
+          {!token && <Route path="/login" element={<Login onLogin={handleLogin} />} />}
+          {/* Private Routes */}
+          {token && (
+            <>
               <Route path="/upload" element={<UploadFile token={token} role={userRole} onFileUpload={handleFileUpload} />} />
               <Route path="/files" element={<FileList userRole={userRole} />} />
               <Route path="/resident-directory" element={<UserList token={token} role={userRole} />} />
               <Route path="/add-user" element={<AddUser token={token} role={userRole} />} />
-              <Route path="contact" element={<ContactUs/>}/>
-            </Routes>
-          </div>
-        )}
+            </>
+          )}
+        </Routes>
       </div>
     </Router>
   );
