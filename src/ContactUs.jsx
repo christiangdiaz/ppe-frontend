@@ -1,36 +1,39 @@
 import React from 'react';
-import PPE from './images/BackPPE.jpg';
 
 const ContactUs = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-gray-200 p-8 rounded-lg shadow-md w-full max-w-2xl">
-        <h2 className="text-3xl font-semibold mb-6 text-center text-gray-800">Contact Us</h2>
-        <div className="mb-8 flex justify-center">
-          <img
-            src={PPE}
-            alt="Pelican Point East"
-            className="rounded-lg w-2/3 md:w-1/2 lg:w-1/3"
-          />
-        </div>
-        <div className="space-y-6">
+      <div className="bg-white p-10 rounded-2xl shadow-2xl w-full max-w-2xl">
+        <h2 className="text-5xl font-extrabold mb-12 text-center text-gray-900">Contact Us</h2>
+        <div className="space-y-12">
           <div>
-            <h3 className="text-2xl font-semibold text-gray-700">Our Address</h3>
-            <p className="text-gray-600">
+            <h3 className="text-3xl font-semibold text-gray-800">Our Address</h3>
+            <a
+              href="https://www.google.com/maps?q=300+Park+Shore+Drive,+Naples,+Florida+34103"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-2 text-lg text-gray-700 underline hover:text-gray-900 hover:underline-offset-4 transition-colors duration-300"
+            >
               300 Park Shore Drive, Naples, Florida 34103
-            </p>
+            </a>
           </div>
           <div>
-            <h3 className="text-2xl font-semibold text-gray-700">Phone Number</h3>
-            <p className="text-gray-600">
+            <h3 className="text-3xl font-semibold text-gray-800">Phone Number</h3>
+            <a
+              href="tel:+12392613440"
+              className="mt-2 text-lg text-gray-700 underline hover:text-gray-900 hover:underline-offset-4 transition-colors duration-300"
+            >
               (239) 261-3440
-            </p>
+            </a>
           </div>
           <div>
-            <h3 className="text-2xl font-semibold text-gray-700">Email Address</h3>
-            <p className="text-gray-600">
+            <h3 className="text-3xl font-semibold text-gray-800">Email Address</h3>
+            <a
+              href="mailto:manager@pelicanpoint300.com"
+              className="mt-2 text-lg text-gray-700 underline hover:text-gray-900 hover:underline-offset-4 transition-colors duration-300"
+            >
               manager@pelicanpoint300.com
-            </p>
+            </a>
           </div>
         </div>
       </div>

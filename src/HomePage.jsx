@@ -17,24 +17,6 @@ const HomePage = () => {
           <img src={Image3} alt="Venetian Village" className="rounded-lg w-full h-auto object-cover"/>
         </div>
         <div className="space-y-6 text-center">
-          <div>
-            <h3 className="text-2xl font-semibold text-gray-700">Our Address</h3>
-            <p className="text-gray-600">
-              300 Park Shore Drive, Naples, Florida 34103
-            </p>
-          </div>
-          <div>
-            <h3 className="text-2xl font-semibold text-gray-700">Phone Number</h3>
-            <p className="text-gray-600">
-              (239) 261-3440
-            </p>
-          </div>
-          <div>
-            <h3 className="text-2xl font-semibold text-gray-700">Email Address</h3>
-            <p className="text-gray-600">
-              manager@pelicanpoint300.com
-            </p>
-          </div>
         </div>
       </div>
     </div>
