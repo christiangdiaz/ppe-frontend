@@ -51,7 +51,7 @@ const App = () => {
   return (
     <Router>
       <div>
-        <Navbar userRole={userRole} onSignOut={handleSignOut} />
+        <Navbar userRole={userRole} onSignOut={handleSignOut}/>
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<HomePage />} />

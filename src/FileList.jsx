@@ -36,7 +36,7 @@ const FileList = ({ userRole }) => {
   };
 
   if (loading) {
-    return <div className="flex items-center justify-center h-screen">Loading...</div>;
+    return <div className="flex items-center justify-center h-screen text-gray-700">Loading...</div>;
   }
 
   if (error) {
@@ -44,17 +44,17 @@ const FileList = ({ userRole }) => {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="max-w-2xl w-full bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <h2 className="text-2xl font-bold mb-4 text-gray-700">File List</h2>
+    <div className="flex items-center justify-center min-h-screen bg-gray-50">
+      <div className="max-w-2xl w-full bg-white shadow-lg rounded-lg p-8">
+        <h2 className="text-3xl font-bold mb-6 text-gray-800">File List</h2>
         <ul className="space-y-4">
           {files.map(file => (
-            <li key={file.id} className="flex justify-between items-center">
-              <a href={file.url} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">{file.name}</a>
+            <li key={file.id} className="flex justify-between items-center border-b border-gray-200 pb-2">
+              <a href={file.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{file.name}</a>
               {userRole === 'manager' && (
                 <button 
                   onClick={() => handleDeleteFile(file.id, file.name)} 
-                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+                  className="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-3 rounded transition-colors duration-200"
                 >
                   Delete
                 </button>

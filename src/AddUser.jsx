@@ -36,40 +36,40 @@ const AddUser = ({ token, role, onAdd }) => {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-gray-200 p-8 rounded-lg shadow-md w-full max-w-md mx-4">
-        <h2 className="text-3xl font-semibold mb-6 text-center text-gray-800">Add User</h2>
+    <div className="flex items-center justify-center min-h-screen bg-gray-50">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md mx-4">
+        <h2 className="text-4xl font-bold mb-6 text-center text-gray-800">Add User</h2>
         <form onSubmit={handleAddUser} className="space-y-6">
           <div>
-            <label className="block text-gray-700 mb-1" htmlFor="username">Username:</label>
+            <label className="block text-gray-700 mb-2" htmlFor="username">Username:</label>
             <input
               type="text"
               id="username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
             />
           </div>
           <div>
-            <label className="block text-gray-700 mb-1" htmlFor="password">Password:</label>
+            <label className="block text-gray-700 mb-2" htmlFor="password">Password:</label>
             <input
               type="password"
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
             />
           </div>
           <div>
-            <label className="block text-gray-700 mb-1" htmlFor="role">Role:</label>
+            <label className="block text-gray-700 mb-2" htmlFor="role">Role:</label>
             <select
               id="role"
               value={roleInput}
               onChange={(e) => setRoleInput(e.target.value)}
               required
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
             >
               <option value="user">User</option>
               <option value="manager">Manager</option>
@@ -77,7 +77,7 @@ const AddUser = ({ token, role, onAdd }) => {
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
           >
             Add User
           </button>

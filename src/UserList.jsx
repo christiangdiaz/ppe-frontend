@@ -37,22 +37,27 @@ const UserList = ({ token, role }) => {
   }
 
   if (loading) {
-    return <div className="text-center mt-4">Loading...</div>;
+    return <div className="flex items-center justify-center h-screen text-gray-700">Loading...</div>;
   }
 
   if (error) {
-    return <div className="text-center mt-4 text-red-500">Error: {error}</div>;
+    return <div className="flex items-center justify-center h-screen text-red-500">Error: {error}</div>;
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-gray-200 p-8 rounded-lg shadow-md w-full max-w-2xl">
-        <h2 className="text-3xl font-semibold mb-6 text-center text-gray-800">Resident's Directory</h2>
+    <div className="flex items-center justify-center min-h-screen bg-gray-50">
+      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-2xl">
+        <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Resident's Directory</h2>
         <ul className="space-y-4">
           {users.map(user => (
-            <li key={user.id} className="flex justify-between items-center bg-white p-4 rounded-lg shadow-sm">
+            <li key={user.id} className="flex justify-between items-center bg-gray-100 p-4 rounded-lg shadow-sm">
               <span className="text-gray-700">{user.username} ({user.role})</span>
-              <button onClick={() => handleDeleteUser(user.id)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline">Delete</button>
+              <button 
+                onClick={() => handleDeleteUser(user.id)} 
+                className="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-3 rounded transition-colors duration-200"
+              >
+                Delete
+              </button>
             </li>
           ))}
         </ul>

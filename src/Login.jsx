@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import mainPicture from './images/PPE.jpg';
 import { useNavigate } from 'react-router-dom';
+
 const Login = ({ onLogin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -28,38 +29,38 @@ const Login = ({ onLogin }) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 relative">
-      <img src={mainPicture} alt="Background" className="absolute inset-0 w-full h-full object-cover z-0 opacity-60" />
-      <div className="bg-white bg-opacity-90 p-10 rounded-lg shadow-xl z-10 max-w-lg w-full">
-        <h1 className="text-4xl font-extrabold mb-6 text-center text-gray-900">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 relative">
+      <img src={mainPicture} alt="Background" className="absolute inset-0 w-full h-full object-cover z-0 opacity-50" />
+      <div className="bg-white p-8 rounded-lg shadow-lg z-10 max-w-md w-full">
+        <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">
           Pelican Point East
         </h1>
         <form onSubmit={handleLogin} className="space-y-6">
           <div>
-            <label className="block text-gray-700 font-semibold mb-2" htmlFor="username">Username:</label>
+            <label className="block text-gray-700 mb-2" htmlFor="username">Username:</label>
             <input
               type="text"
               id="username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
-              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-200 ease-in-out"
+              className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 transition duration-200 ease-in-out"
             />
           </div>
           <div>
-            <label className="block text-gray-700 font-semibold mb-2" htmlFor="password">Password:</label>
+            <label className="block text-gray-700 mb-2" htmlFor="password">Password:</label>
             <input
               type="password"
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-200 ease-in-out"
+              className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 transition duration-200 ease-in-out"
             />
           </div>
           <button
             type="submit"
-            className="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition-colors duration-200"
+            className="w-full bg-gray-800 text-white py-3 rounded-md hover:bg-gray-900 transition-colors duration-200"
           >
             Login
           </button>
