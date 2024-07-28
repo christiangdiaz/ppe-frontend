@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import mainPicture from './images/PPE.jpg';
 import { useNavigate } from 'react-router-dom';
+import { db } from './firebase'; // Import the Firestore instance
+import { doc, updateDoc } from 'firebase/firestore'; // Import Firestore methods
 
 const Login = ({ onLogin }) => {
   const [username, setUsername] = useState('');
@@ -21,7 +23,14 @@ const Login = ({ onLogin }) => {
 
       if (response.status === 200) {
         onLogin(response.data.token); // Pass the custom token to the parent component
-        navigate('/')
+
+        // Update last login time in Firestore
+        const userDoc = doc(db, 'users', username);
+        await updateDoc(userDoc, {
+          lastLogin: new Date()
+        });
+
+        navigate('/');
       }
     } catch (error) {
       setError(error.response ? error.response.data.message : error.message);
