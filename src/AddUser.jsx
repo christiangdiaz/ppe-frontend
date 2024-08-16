@@ -6,10 +6,12 @@ const AddUser = ({ token, role, onAdd }) => {
   const [password, setPassword] = useState('');
   const [roleInput, setRoleInput] = useState('user');
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
 
   const handleAddUser = async (e) => {
     e.preventDefault();
     setError(null);
+    setSuccess(false);
 
     try {
       const response = await axios.post('https://lit-sea-66725-e16b11feba54.herokuapp.com/users', {
@@ -24,10 +26,20 @@ const AddUser = ({ token, role, onAdd }) => {
         setUsername('');
         setPassword('');
         setRoleInput('user');
+        setSuccess(true);
         onAdd();
       }
     } catch (error) {
-      setError(error.response ? error.response.data.message : error.message);
+      const errorMessage = error.response ? error.response.data.message : error.message;
+      if (errorMessage === 'Failed to authenticate token.') {
+        setError('Your session has expired. Please log in again.');
+      } else if (errorMessage === 'Error creating user') {
+        setError(null);
+      } else if(errorMessage === 'onAdd is not a function'){
+        setError(null);
+      } else{
+        setError(errorMessage)
+      }
     }
   };
 
@@ -83,6 +95,7 @@ const AddUser = ({ token, role, onAdd }) => {
           </button>
         </form>
         {error && <p className="mt-4 text-center text-red-500">{`Error: ${error}`}</p>}
+        {success && <p className='mt-4 text-center text-green-500'>{`User successfully created`}</p>}
       </div>
     </div>
   );
