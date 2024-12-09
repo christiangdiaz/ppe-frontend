@@ -5,10 +5,10 @@ import { collection, addDoc } from 'firebase/firestore';
 
 const UploadFile = ({ token, role, onFileUpload }) => {
   const [file, setFile] = useState(null);
+  const [category, setCategory] = useState('notices'); // Default category
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-  const [fileUrl, setFileUrl] = useState('');
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -16,8 +16,15 @@ const UploadFile = ({ token, role, onFileUpload }) => {
     setSuccess(null);
   };
 
+  const handleCategoryChange = (e) => {
+    setCategory(e.target.value);
+  };
+
   const handleUpload = async () => {
-    if (!file) return;
+    if (!file) {
+      setError('Please select a file before uploading.');
+      return;
+    }
 
     setUploading(true);
     setError(null);
@@ -28,14 +35,13 @@ const UploadFile = ({ token, role, onFileUpload }) => {
       const snapshot = await uploadBytes(storageRef, file);
       const downloadURL = await getDownloadURL(snapshot.ref);
 
-      setFileUrl(downloadURL);
-
       await addDoc(collection(db, 'files'), {
         name: file.name,
-        url: downloadURL
+        url: downloadURL,
+        category: category
       });
 
-      onFileUpload();
+      onFileUpload?.();
       setSuccess('File uploaded successfully!');
       setFile(null);
       document.querySelector('input[type="file"]').value = null;
@@ -54,6 +60,7 @@ const UploadFile = ({ token, role, onFileUpload }) => {
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
       <div className="max-w-lg w-full bg-white shadow-lg rounded-lg p-8">
         <h2 className="text-4xl font-bold mb-6 text-center text-gray-800">Upload File</h2>
+        
         <div className="mb-4">
           <input 
             type="file" 
@@ -65,6 +72,20 @@ const UploadFile = ({ token, role, onFileUpload }) => {
             focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
+
+        <div className="mb-4">
+          <label className="block mb-2 text-gray-700 font-semibold">Select Category</label>
+          <select
+            value={category}
+            onChange={handleCategoryChange}
+            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="notices">Notices for Meetings</option>
+            <option value="rules">Rules and Regulations</option>
+            <option value="documents">Documents</option>
+          </select>
+        </div>
+
         <button 
           onClick={handleUpload} 
           disabled={uploading} 
@@ -75,6 +96,7 @@ const UploadFile = ({ token, role, onFileUpload }) => {
         >
           {uploading ? 'Uploading...' : 'Upload'}
         </button>
+
         {error && <p className="text-red-500 mt-4">{error}</p>}
         {success && <p className="text-green-500 mt-4">{success}</p>}
       </div>

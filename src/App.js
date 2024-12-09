@@ -20,16 +20,16 @@ const App = () => {
   useEffect(() => {
     const storedToken = localStorage.getItem('authToken');
     if (storedToken) {
-      const decodedToken = jwtDecode(storedToken); // Decode the token
+      const decodedToken = jwtDecode(storedToken); 
       setToken(storedToken);
-      setUserRole(decodedToken.role); // Extract the role from the decoded token
+      setUserRole(decodedToken.role); 
     }
   }, []);
 
   const handleLogin = (newToken) => {
-    const decodedToken = jwtDecode(newToken); // Decode the token
+    const decodedToken = jwtDecode(newToken); 
     setToken(newToken);
-    setUserRole(decodedToken.role); // Extract the role from the decoded token
+    setUserRole(decodedToken.role); 
     localStorage.setItem('authToken', newToken);
     localStorage.setItem('userRole', decodedToken.role);
   };
@@ -42,7 +42,7 @@ const App = () => {
   };
 
   const handleFileUpload = () => {
-    setFileListUpdate(!fileListUpdate); // Toggle the state to trigger re-fetching files
+    setFileListUpdate(!fileListUpdate); 
   };
 
   return (
@@ -59,7 +59,7 @@ const App = () => {
             {token && (
               <>
                 <Route path="/upload" element={<UploadFile token={token} role={userRole} onFileUpload={handleFileUpload} />} />
-                <Route path="/files" element={<FileList userRole={userRole} />} />
+                <Route path="/owners-area" element={<FileList userRole={userRole} />} />
                 <Route path="/resident-directory" element={<UserList token={token} role={userRole} />} />
                 <Route path="/add-user" element={<AddUser token={token} role={userRole} />} />
               </>
