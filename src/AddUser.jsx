@@ -31,11 +31,13 @@ const AddUser = ({ token, role, onAdd }) => {
       }
     } catch (error) {
       const errorMessage = error.response ? error.response.data.message : error.message;
-      if (errorMessage === 'Failed to authenticate token.') {
+      if (errorMessage === 'Failed to authenticate token') {
         setError('Your session has expired. Please log in again.');
       } else if (errorMessage === 'Error creating user') {
         setError(null);
       } else if(errorMessage === 'onAdd is not a function'){
+        setError(null);
+      } else if(errorMessage === 'r is not a function'){
         setError(null);
       } else{
         setError(errorMessage)
