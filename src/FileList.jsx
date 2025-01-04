@@ -92,7 +92,7 @@ const OwnersArea = ({ userRole }) => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50 p-4">
       <div className="max-w-3xl w-full bg-white shadow-lg rounded-lg p-4 md:p-8">
-        <h2 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6 text-gray-800">Owner's Area</h2>
+        <h2 className="flex justify-center text-2xl md:text-3xl font-bold mb-4 md:mb-6 text-gray-800">Owners' Area</h2>
         
         <div className="flex justify-center space-x-4 mb-8">
           <button
@@ -100,6 +100,12 @@ const OwnersArea = ({ userRole }) => {
             className={`px-4 py-2 font-bold text-white rounded ${selectedCategory === 'notices' ? 'bg-blue-700' : 'bg-blue-600 hover:bg-blue-700'}`}
           >
             Notices for Meetings
+          </button>
+          <button
+            onClick={() => { setSelectedCategory('minutes'); setSelectedFiles({}); setAllSelected(false); }}
+            className={`px-4 py-2 font-bold text-white rounded ${selectedCategory == `minutes` ? 'bg-blue-700' : 'bg-blue-600 hover:bg-blue-700'}`}
+            >
+              Meeting Minutes
           </button>
           <button
             onClick={() => { setSelectedCategory('rules'); setSelectedFiles({}); setAllSelected(false); }}
@@ -112,6 +118,12 @@ const OwnersArea = ({ userRole }) => {
             className={`px-4 py-2 font-bold text-white rounded ${selectedCategory === 'documents' ? 'bg-blue-700' : 'bg-blue-600 hover:bg-blue-700'}`}
           >
             Documents
+          </button>
+          <button
+            onClick={() => { setSelectedCategory('board'); setSelectedFiles({}); setAllSelected(false); }}
+            className={`px-4 py-2 font-bold text-white rounded ${selectedCategory === 'board' ? 'bg-blue-700' : 'bg-blue-600 hover:bg-blue-700'}`}
+          >
+            Board Members
           </button>
         </div>
 

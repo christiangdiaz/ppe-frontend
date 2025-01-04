@@ -20,10 +20,10 @@ const ContactUs = () => {
           <div>
             <h3 className="text-3xl font-semibold text-gray-800">Phone Number</h3>
             <a
-              href="tel:+12392613440"
+              href="tel:+12392623332"
               className="mt-2 text-lg text-gray-700 underline hover:text-gray-900 hover:underline-offset-4 transition-colors duration-300"
             >
-              (239) 261-3440
+              (239) 262-3332
             </a>
           </div>
           <div>
