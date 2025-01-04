@@ -62,7 +62,7 @@ const App = () => {
                 <Route path="/upload" element={<UploadFile token={token} role={userRole} onFileUpload={handleFileUpload} />} />
                 <Route path="/owners-area" element={<FileList userRole={userRole} />} />
                 <Route path="/resident-directory" element={<UserList token={token} role={userRole} />} />
-                <Route path="/add-user" element={<AddUser token={token} role={userRole} />} />
+                <Route path="/add-user" element={<AddUser token={token} role={userRole} onLogout={handleSignOut} />} />
               </>
             )}
           </Routes>

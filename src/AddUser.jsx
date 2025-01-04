@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const AddUser = ({ token, role, onAdd }) => {
+const AddUser = ({ token, role, onAdd, onLogout }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [roleInput, setRoleInput] = useState('user');
@@ -32,15 +32,17 @@ const AddUser = ({ token, role, onAdd }) => {
     } catch (error) {
       const errorMessage = error.response ? error.response.data.message : error.message;
       if (errorMessage === 'Failed to authenticate token') {
-        setError('Your session has expired. Please log in again.');
+        if (window.confirm('Your session has expired. Please log in again.')) {
+          onLogout(); // Clear token and redirect to login
+        }
       } else if (errorMessage === 'Error creating user') {
         setError(null);
-      } else if(errorMessage === 'onAdd is not a function'){
+      } else if (errorMessage === 'onAdd is not a function') {
         setError(null);
-      } else if(errorMessage === 'r is not a function'){
+      } else if (errorMessage === 'r is not a function') {
         setError(null);
-      } else{
-        setError(errorMessage)
+      } else {
+        setError(errorMessage);
       }
     }
   };
