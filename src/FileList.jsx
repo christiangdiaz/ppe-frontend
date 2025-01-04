@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { db, storage } from './firebase';
-import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
+import { collection, getDocs, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { ref, deleteObject, getDownloadURL } from 'firebase/storage';
 
 const OwnersArea = ({ userRole }) => {
@@ -9,7 +9,7 @@ const OwnersArea = ({ userRole }) => {
   const [error, setError] = useState(null);
   const [selectedFiles, setSelectedFiles] = useState({});
   const [allSelected, setAllSelected] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState('notices'); // default category
+  const [selectedCategory, setSelectedCategory] = useState('notices');
 
   useEffect(() => {
     const fetchFiles = async () => {
@@ -17,56 +17,53 @@ const OwnersArea = ({ userRole }) => {
         const querySnapshot = await getDocs(collection(db, 'files'));
         const filesList = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         setFiles(filesList);
-        setLoading(false);
       } catch (error) {
         setError(error.message);
+      } finally {
         setLoading(false);
       }
     };
-
     fetchFiles();
   }, []);
 
   const handleDeleteFile = async (fileId, fileName) => {
     try {
       await deleteDoc(doc(db, 'files', fileId));
-      const storageRef = ref(storage, `files/${fileName}`);
-      await deleteObject(storageRef);
-      setFiles(files.filter(file => file.id !== fileId));
+      await deleteObject(ref(storage, `files/${fileName}`));
+      setFiles(prevFiles => prevFiles.filter(file => file.id !== fileId));
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
+  const handleEditFileCategory = async (fileId, newCategory) => {
+    try {
+      if (!newCategory) return;
+      const fileDoc = doc(db, 'files', fileId);
+      await updateDoc(fileDoc, { category: newCategory });
+      setFiles(prevFiles => prevFiles.map(file => file.id === fileId ? { ...file, category: newCategory } : file));
     } catch (error) {
       setError(error.message);
     }
   };
 
   const handleSelectFile = (fileId) => {
-    setSelectedFiles(prevState => ({
-      ...prevState,
-      [fileId]: !prevState[fileId]
-    }));
+    setSelectedFiles(prev => ({ ...prev, [fileId]: !prev[fileId] }));
   };
 
   const handleSelectAllFiles = () => {
-    // Select only files from the currently selected category
     const visibleFiles = files.filter(file => file.category === selectedCategory);
-    if (allSelected) {
-      setSelectedFiles({});
-    } else {
-      const newSelectedFiles = {};
-      visibleFiles.forEach(file => {
-        newSelectedFiles[file.id] = true;
-      });
-      setSelectedFiles(newSelectedFiles);
-    }
+    const newSelectedFiles = allSelected ? {} : Object.fromEntries(visibleFiles.map(file => [file.id, true]));
+    setSelectedFiles(newSelectedFiles);
     setAllSelected(!allSelected);
   };
 
   const handleDownloadSelectedFiles = async () => {
-    const selectedFileEntries = Object.entries(selectedFiles).filter(([, isSelected]) => isSelected);
-    for (const [fileId,] of selectedFileEntries) {
+    const selectedFileIds = Object.keys(selectedFiles).filter(id => selectedFiles[id]);
+    for (const fileId of selectedFileIds) {
       const file = files.find(file => file.id === fileId);
       if (file) {
-        const storageRef = ref(storage, `files/${file.name}`);
-        const url = await getDownloadURL(storageRef);
+        const url = await getDownloadURL(ref(storage, `files/${file.name}`));
         const anchor = document.createElement('a');
         anchor.href = url;
         anchor.download = file.name;
@@ -78,97 +75,64 @@ const OwnersArea = ({ userRole }) => {
     }
   };
 
-  if (loading) {
-    return <div className="flex items-center justify-center h-screen text-gray-700">Loading...</div>;
-  }
+  const categories = [
+    { key: 'notices', label: 'Notices for Meetings' },
+    { key: 'minutes', label: 'Meeting Minutes' },
+    { key: 'rules', label: 'Rules and Regulations' },
+    { key: 'documents', label: 'Documents' },
+    { key: 'board', label: 'Board of Directors' }
+  ];
 
-  if (error) {
-    return <div className="flex items-center justify-center h-screen text-red-500">Error: {error}</div>;
-  }
+  if (loading) return <div className="flex items-center justify-center h-screen text-gray-700">Loading...</div>;
+  if (error) return <div className="flex items-center justify-center h-screen text-red-500">Error: {error}</div>;
 
-  // Filter files based on selected category
   const filteredFiles = files.filter(file => file.category === selectedCategory);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50 p-4">
       <div className="max-w-3xl w-full bg-white shadow-lg rounded-lg p-4 md:p-8">
-        <h2 className="flex justify-center text-2xl md:text-3xl font-bold mb-4 md:mb-6 text-gray-800">Owners' Area</h2>
-        
+        <h2 className="text-center text-2xl md:text-3xl font-bold mb-6">Owners' Area</h2>
+
         <div className="flex justify-center space-x-4 mb-8">
-          <button
-            onClick={() => { setSelectedCategory('notices'); setSelectedFiles({}); setAllSelected(false); }}
-            className={`px-4 py-2 font-bold text-white rounded ${selectedCategory === 'notices' ? 'bg-blue-700' : 'bg-blue-600 hover:bg-blue-700'}`}
-          >
-            Notices for Meetings
-          </button>
-          <button
-            onClick={() => { setSelectedCategory('minutes'); setSelectedFiles({}); setAllSelected(false); }}
-            className={`px-4 py-2 font-bold text-white rounded ${selectedCategory == `minutes` ? 'bg-blue-700' : 'bg-blue-600 hover:bg-blue-700'}`}
+          {categories.map(({ key, label }) => (
+            <button
+              key={key}
+              onClick={() => { setSelectedCategory(key); setSelectedFiles({}); setAllSelected(false); }}
+              className={`px-4 py-2 font-bold text-white rounded ${selectedCategory === key ? 'bg-blue-700' : 'bg-blue-600 hover:bg-blue-700'}`}
             >
-              Meeting Minutes
-          </button>
-          <button
-            onClick={() => { setSelectedCategory('rules'); setSelectedFiles({}); setAllSelected(false); }}
-            className={`px-4 py-2 font-bold text-white rounded ${selectedCategory === 'rules' ? 'bg-blue-700' : 'bg-blue-600 hover:bg-blue-700'}`}
-          >
-            Rules and Regulations
-          </button>
-          <button
-            onClick={() => { setSelectedCategory('documents'); setSelectedFiles({}); setAllSelected(false); }}
-            className={`px-4 py-2 font-bold text-white rounded ${selectedCategory === 'documents' ? 'bg-blue-700' : 'bg-blue-600 hover:bg-blue-700'}`}
-          >
-            Documents
-          </button>
-          <button
-            onClick={() => { setSelectedCategory('board'); setSelectedFiles({}); setAllSelected(false); }}
-            className={`px-4 py-2 font-bold text-white rounded ${selectedCategory === 'board' ? 'bg-blue-700' : 'bg-blue-600 hover:bg-blue-700'}`}
-          >
-            Board Members
-          </button>
+              {label}
+            </button>
+          ))}
         </div>
 
-        <div className="flex flex-col md:flex-row justify-between items-center mb-8 space-y-2 md:space-y-0">
-          <button
-            onClick={handleSelectAllFiles}
-            className={`w-full md:w-auto bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition-colors duration-200 ${allSelected ? 'bg-green-700' : 'bg-green-600'}`}
-          >
+        <div className="flex justify-between mb-8">
+          <button onClick={handleSelectAllFiles} className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded">
             {allSelected ? 'Deselect All' : 'Select All'}
           </button>
-          <button
-            onClick={handleDownloadSelectedFiles}
-            className="w-full md:w-auto bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded transition-colors duration-200"
-          >
+          <button onClick={handleDownloadSelectedFiles} className="bg-yellow-600 hover:bg-yellow-700 text-white py-2 px-4 rounded">
             Download Selected Files
           </button>
         </div>
 
         {filteredFiles.length === 0 ? (
-          <p className="text-gray-500">No files available in this section.</p>
+          <p className="text-gray-500 text-center">No files available in this section.</p>
         ) : (
           <ul className="space-y-4">
             {filteredFiles.map(file => (
-              <li key={file.id} className="flex justify-between items-center border-b border-gray-200 pb-2">
-                <input
-                  type="checkbox"
-                  checked={selectedFiles[file.id] || false}
-                  onChange={() => handleSelectFile(file.id)}
-                  className="mr-2 transform scale-150"
-                />
-                <a
-                  href={file.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline break-all"
-                >
+              <li key={file.id} className="flex justify-between items-center border-b pb-2">
+                <input type="checkbox" checked={selectedFiles[file.id] || false} onChange={() => handleSelectFile(file.id)} className="mr-2" />
+                <a href={file.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
                   {file.name}
                 </a>
                 {userRole === 'manager' && (
-                  <button
-                    onClick={() => handleDeleteFile(file.id, file.name)}
-                    className="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-3 rounded transition-colors duration-200"
-                  >
-                    Delete
-                  </button>
+                  <div className="flex space-x-2">
+                    <select onChange={(e) => handleEditFileCategory(file.id, e.target.value)} value={file.category} className="py-1 px-3 rounded">
+                      {categories.map(({ key, label }) => (
+                        <option key={key} value={key}>{label}</option>
+                      ))}
+                    </select>
+                    <button onClick={() => handleDeleteFile(file.id, file.name)} className="bg-red-600 hover:bg-red-700 text-white py-1 px-3 rounded">Delete</button>
+                  </div>
                 )}
               </li>
             ))}
