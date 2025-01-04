@@ -93,23 +93,23 @@ const OwnersArea = ({ userRole }) => {
       <div className="max-w-3xl w-full bg-white shadow-lg rounded-lg p-4 md:p-8">
         <h2 className="text-center text-2xl md:text-3xl font-bold mb-6">Owners' Area</h2>
 
-        <div className="flex justify-center space-x-4 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
           {categories.map(({ key, label }) => (
             <button
               key={key}
               onClick={() => { setSelectedCategory(key); setSelectedFiles({}); setAllSelected(false); }}
-              className={`px-4 py-2 font-bold text-white rounded ${selectedCategory === key ? 'bg-blue-700' : 'bg-blue-600 hover:bg-blue-700'}`}
+              className={`px-4 py-2 font-bold text-white rounded w-full ${selectedCategory === key ? 'bg-blue-700' : 'bg-blue-600 hover:bg-blue-700'}`}
             >
               {label}
             </button>
           ))}
         </div>
 
-        <div className="flex justify-between mb-8">
-          <button onClick={handleSelectAllFiles} className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded">
+        <div className="flex flex-col md:flex-row justify-between mb-8 gap-2">
+          <button onClick={handleSelectAllFiles} className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded w-full md:w-auto">
             {allSelected ? 'Deselect All' : 'Select All'}
           </button>
-          <button onClick={handleDownloadSelectedFiles} className="bg-yellow-600 hover:bg-yellow-700 text-white py-2 px-4 rounded">
+          <button onClick={handleDownloadSelectedFiles} className="bg-yellow-600 hover:bg-yellow-700 text-white py-2 px-4 rounded w-full md:w-auto">
             Download Selected Files
           </button>
         </div>
@@ -119,19 +119,21 @@ const OwnersArea = ({ userRole }) => {
         ) : (
           <ul className="space-y-4">
             {filteredFiles.map(file => (
-              <li key={file.id} className="flex justify-between items-center border-b pb-2">
-                <input type="checkbox" checked={selectedFiles[file.id] || false} onChange={() => handleSelectFile(file.id)} className="mr-2" />
-                <a href={file.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-                  {file.name}
-                </a>
+              <li key={file.id} className="flex flex-col md:flex-row justify-between items-center border-b pb-2">
+                <div className="flex items-center w-full md:w-auto">
+                  <input type="checkbox" checked={selectedFiles[file.id] || false} onChange={() => handleSelectFile(file.id)} className="mr-2" />
+                  <a href={file.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                    {file.name}
+                  </a>
+                </div>
                 {userRole === 'manager' && (
-                  <div className="flex space-x-2">
-                    <select onChange={(e) => handleEditFileCategory(file.id, e.target.value)} value={file.category} className="py-1 px-3 rounded">
+                  <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 w-full md:w-auto">
+                    <select onChange={(e) => handleEditFileCategory(file.id, e.target.value)} value={file.category} className="py-1 px-3 rounded w-full md:w-auto">
                       {categories.map(({ key, label }) => (
                         <option key={key} value={key}>{label}</option>
                       ))}
                     </select>
-                    <button onClick={() => handleDeleteFile(file.id, file.name)} className="bg-red-600 hover:bg-red-700 text-white py-1 px-3 rounded">Delete</button>
+                    <button onClick={() => handleDeleteFile(file.id, file.name)} className="bg-red-600 hover:bg-red-700 text-white py-1 px-3 rounded w-full md:w-auto">Delete</button>
                   </div>
                 )}
               </li>

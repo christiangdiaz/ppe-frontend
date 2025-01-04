@@ -121,7 +121,7 @@ const Navbar = ({ userRole, onSignOut }) => {
         <div className="px-2 pt-2 pb-3 space-y-1">
           <Link to="/" onClick={() => setIsOpen(false)} className="text-gray-200 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium transition duration-300">Home</Link>
           {userRole !== 'Guest' && (
-            <Link to="/files" onClick={() => setIsOpen(false)} className="text-gray-200 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium transition duration-300">File List</Link>
+            <Link to="/owners-area" onClick={() => setIsOpen(false)} className="text-gray-200 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium transition duration-300">Owners' Area</Link>
           )}
           {userRole === 'manager' && (
             <>

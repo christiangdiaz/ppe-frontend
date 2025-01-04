@@ -84,6 +84,7 @@ const UploadFile = ({ token, role, onFileUpload }) => {
             <option value="rules">Rules and Regulations</option>
             <option value="documents">Documents</option>
             <option value="minutes">Meeting Minutes</option>
+            <option value='board'>Board of Directors</option>
           </select>
         </div>
 
