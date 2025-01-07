@@ -11,7 +11,7 @@ const HomePage = () => {
       <div className="w-full max-w-5xl bg-white shadow-md rounded-lg p-6 mb-8">
         <h1 className="text-4xl font-bold text-center text-gray-700 mb-8">Welcome to Pelican Point East</h1>
         <p className="text-center text-gray-600 mb-10">
-          Located at 300 Park Shore Drive, Naples, Florida 34103, Pelican Point East offers a prime location near Venetian Village and Park Shore Beach. Enjoy luxurious living with stunning views and top-notch amenities.
+        Pelican Point East Condos are located directly on Venetian Bay in Park Shore, where there are stunning views of the bay and there are radiant skies at sunset.  Pelican Point East is just a short walk to some of Naples' best restaurants and shops located at The Venetian Village on Venetian Bay and access to the beach is via the Park Shore Association Beach Park.  
         </p>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
