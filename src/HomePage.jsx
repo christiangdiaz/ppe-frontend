@@ -1,7 +1,7 @@
 import React from 'react';
-import Kitchen from './images/Kitchen.jpg';
+import Kitchen from './images/Paint2.jpg';
 import Pool from './images/PoolArea.jpg';
-import Image1 from './images/Flag.jpg';
+import Image1 from './images/Paint1.jpg';
 import Image2 from './images/Bay Reflection.jpg'
 import Image3 from './images/Docks.jpg'
 
